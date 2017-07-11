@@ -61,7 +61,7 @@ var Router = {
 	}
 }
 
-Router.config({root: 'file:///C:/Users/Varun%20Mathur/Desktop/Web%20Projects/ColumbusVUE/Columbus/'});
+Router.config();
 
 var App = window.App = new Vue({
 	el: "#site-wrapper",
