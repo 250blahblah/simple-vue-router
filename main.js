@@ -30,9 +30,15 @@ var Router = {
 		'#/4': Page4,
 		'#/404': NotFound
 	},
+        template: '<component :is="view()"></component>',
 	config: function(options){
 		this.root = options && options.root ? options.root : '/';
 		this.setAnchors()
+		if (options && options.transition) {
+			this.template = '<transition name="component-fade" mode="out-in">\
+				<component :is="view()"></component>\
+			</transition>'
+		}
 		window.addEventListener('popstate', () => {
 			this.render()
 			this.setAnchors()
@@ -61,7 +67,7 @@ var Router = {
 	}
 }
 
-Router.config();
+Router.config({transition: true});
 
 var App = window.App = new Vue({
 	el: "#site-wrapper",
@@ -71,12 +77,9 @@ var App = window.App = new Vue({
 		}
 	},
 	methods: {
-		ViewComponent: function(){
-			//console.log('current route: ' + this.currentRoute)
+		view: function(){
 			return Router.routes[this.currentRoute] || Router.routes['#/404'];
 		}
 	},
-	render(h) { 
-		return h(this.ViewComponent()) 
-	}
+	template: Router.template
 })
